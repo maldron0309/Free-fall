@@ -1,20 +1,25 @@
 #include <raylib.h>
+#include "freefall.h"
 
-int main() 
+int main()
 {
-    
-    constexpr int screenWidth = 800;
-    constexpr int screenHeight = 600;
-    
-    InitWindow(screenWidth, screenHeight, "Free Fall");
-    SetTargetFPS(60);
-    
+    FreeFall freeFall;
+    freeFall.Init();
+
     while (!WindowShouldClose())
-    {        
+    {
         BeginDrawing();
+
+        freeFall.Update();
+        ClearBackground(WHITE);
+
+        freeFall.Draw();
+        freeFall.DrawButtons(freeFall.currentMode);
+        freeFall.HandleMouseInput(freeFall.currentMode);
+
 
         EndDrawing();
     }
-    
+
     CloseWindow();
 }
