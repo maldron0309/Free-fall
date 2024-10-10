@@ -19,41 +19,67 @@ void FreeFall::Update()
     float deltaTime = GetFrameTime();
     time += deltaTime;
 
+    float mass1 = 10.0f; // 10kg
+    float mass2 = 20.0f; // 20kg
+    float mass3 = 30.0f; // 30kg
+
+    float dragCoefficient1, dragCoefficient2, dragCoefficient3;
+
     switch (currentMode)
     {
     case NO_AIR_RESISTANCE:
         velocity1 += gravity * deltaTime;
         position1 += velocity1 * deltaTime;
+
         velocity2 += gravity * deltaTime;
         position2 += velocity2 * deltaTime;
+
         velocity3 += gravity * deltaTime;
         position3 += velocity3 * deltaTime;
         break;
 
     case AIR_RESISTANCE:
-        velocity1 += (gravity - 0.5f * velocity1) * deltaTime;
+        dragCoefficient1 = 0.5f * velocity1; 
+        dragCoefficient2 = 0.5f * velocity2;
+        dragCoefficient3 = 0.5f * velocity3;
+
+        velocity1 += (gravity - dragCoefficient1 / mass1) * deltaTime;
         position1 += velocity1 * deltaTime;
-        velocity2 += (gravity - 0.5f * velocity2) * deltaTime;
+
+        velocity2 += (gravity - dragCoefficient2 / mass2) * deltaTime;
         position2 += velocity2 * deltaTime;
-        velocity3 += (gravity - 0.5f * velocity3) * deltaTime;
+
+        velocity3 += (gravity - dragCoefficient3 / mass3) * deltaTime;
         position3 += velocity3 * deltaTime;
         break;
 
     case LINEAR_AIR_RESISTANCE:
-        velocity1 += (gravity - 0.1f * velocity1) * deltaTime;
+        dragCoefficient1 = 0.1f * velocity1; 
+        dragCoefficient2 = 0.1f * velocity2;
+        dragCoefficient3 = 0.1f * velocity3; 
+
+        velocity1 += (gravity - dragCoefficient1 / mass1) * deltaTime;
         position1 += velocity1 * deltaTime;
-        velocity2 += (gravity - 0.1f * velocity2) * deltaTime;
+
+        velocity2 += (gravity - dragCoefficient2 / mass2) * deltaTime;
         position2 += velocity2 * deltaTime;
-        velocity3 += (gravity - 0.1f * velocity3) * deltaTime;
+
+        velocity3 += (gravity - dragCoefficient3 / mass3) * deltaTime;
         position3 += velocity3 * deltaTime;
         break;
 
     case QUADRATIC_AIR_RESISTANCE:
-        velocity1 += (gravity - 0.01f * velocity1 * velocity1) * deltaTime;
+        dragCoefficient1 = 0.01f * velocity1 * velocity1;
+        dragCoefficient2 = 0.01f * velocity2 * velocity2;
+        dragCoefficient3 = 0.01f * velocity3 * velocity3; 
+
+        velocity1 += (gravity - dragCoefficient1 / mass1) * deltaTime;
         position1 += velocity1 * deltaTime;
-        velocity2 += (gravity - 0.01f * velocity2 * velocity2) * deltaTime;
+
+        velocity2 += (gravity - dragCoefficient2 / mass2) * deltaTime;
         position2 += velocity2 * deltaTime;
-        velocity3 += (gravity - 0.01f * velocity3 * velocity3) * deltaTime;
+
+        velocity3 += (gravity - dragCoefficient3 / mass3) * deltaTime;
         position3 += velocity3 * deltaTime;
         break;
     }
@@ -83,7 +109,7 @@ void FreeFall::Draw()
 
     DrawButtons(currentMode);
 
-    int radius = 20;
+    int radius = 30;
     int baseY1 = (int)(position1);
     int baseY2 = (int)(position2);
     int baseY3 = (int)(position3);
